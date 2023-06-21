@@ -1,0 +1,18 @@
+* geometric-boost
+
+Boosting is an algorithm specific to machine learning that efficiently
+collects weak learners and augments them into a strong learner.
+
+Each step of Boosting is the estimation of a weak learner using
+weighted data, but when reconsidered in the space of probability
+distributions, it can be understood as a special coordinate gradient descent
+method that sequentially updates a special learning model based on the
+previously acquired learner with the original data.
+
+#+begin_quote
+Murata, N., Takenouchi, T., Kanamori, T., Eguchi, S.:
+"Information geometry of U-Boost and Bregman divergence",
+/Neural Computation/, 
+Volume 16, Issue 7, July 2004, Pages 1437-1481.
+[[https://doi.org/10.1162/089976604323057452]]
+#+end_quote

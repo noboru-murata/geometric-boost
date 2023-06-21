@@ -1,0 +1,647 @@
+% Created 2023-06-21 Wed 16:24
+% Intended LaTeX compiler: pdflatex
+\documentclass[fleqn,aspectratio=1610]{beamer}
+\author{Noboru Murata}
+\date{\today}
+\title{Boosting by Well-Designed Ensemble}
+\subtitle{geometrical view of ensemble learning}
+\usepackage[toc=none]{mytalk}
+\addbibresource{papers.bib}
+\graphicspath{{figs/}{refs/}}
+\DeclareGraphicsExtensions{.pdf,.png,.eps,.jpg}
+\institute{\url{https://noboru-murata.github.io/}}
+\hypersetup{
+ pdfauthor={Noboru Murata},
+ pdftitle={Boosting by Well-Designed Ensemble},
+ pdfkeywords={information geometry, boosting, bagging, ensemble learning},
+ pdfsubject={based on Murata et al (2004), https://doi.org/10.1162/089976604323057452},
+ pdfcreator={Emacs 28.2 (Org mode 9.6.4)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
+
+\section{Introduction}
+\label{sec:orgdf62fc8}
+\subsection{majority vote}
+\label{sec:orgf52a847}
+\begin{frame}[label={sec:org0e0a9ac}]{Majority Vote}
+\begin{itemize}
+\item <1-> consider participating a quiz show where 
+threesome teams compete in answering various genre questions \\[0pt]
+(10 genres such as history, politics, entertainment, sports)
+\vspace{10pt}
+\begin{itemize}
+\item <2-> good threesome
+\begin{itemize}
+\item <3-> each member can answer 8 genres
+\item <3-> all the members are weak in entertainment and sports
+\item <3-> \alert{stereo-typed good members}
+\end{itemize}
+\end{itemize}
+\vspace{10pt}
+\item <2-> poor threesome 
+\begin{itemize}
+\item <3-> each member can answer 6 genres
+\item <3-> all the member are weak in different genres
+\item <3-> \alert{poor but varied members}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label={sec:orgca0193b}]{Ensemble Learning}
+\begin{center}
+\begin{tabular}{cc}
+  \includegraphics[page=1,width=.4\linewidth]{vote0}
+  &\includegraphics[page=1,width=.4\linewidth]{vote1}\\
+  good threesome
+  &\alert{poor threesome}
+\end{tabular}
+\end{center}
+\begin{alertblock}<2->{essence of ensemble learning}
+\begin{itemize}
+\item collect as varied individuals as possible
+\item each individual does better than random guess
+\end{itemize}
+(\cite{Freund1995,FreundSchapire1997})  
+\end{alertblock}
+\end{frame}
+
+\begin{frame}[label={sec:orgc5740e9}]{Simple Example}
+classification problem:
+\begin{itemize}
+\item predict label \(y\in\mathcal{Y}\) from corresponding
+features \(\boldsymbol{x}\in\mathcal{X}\)
+\item construct a classifier \(h(\boldsymbol{x})=\hat{y}\) from finite samples
+\end{itemize}
+\begin{center}
+\includegraphics[width=.4\linewidth]{sample}
+\end{center}
+\end{frame}
+
+\begin{frame}[label={sec:orgf92c82d}]{Effect of Boosting}
+\begin{center}
+obtained classifier
+\end{center}
+\begin{columns}
+\begin{column}{0.5\columnwidth}
+\begin{center}
+\includegraphics[width=.8\linewidth]{before3d} \\[0pt]
+without boosting
+\end{center}
+\end{column}
+\begin{column}{0.5\columnwidth}
+\begin{center}
+\includegraphics[width=.8\linewidth]{after3d} \\[0pt]
+with boosting
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\subsection{geometrical view}
+\label{sec:orga47f139}
+\begin{frame}[label={sec:org3afc8ef}]{normal mixture}
+\begin{columns}
+\begin{column}{0.5\columnwidth}
+\begin{itemize}
+\item select a Gaussian subject to categorical distribution
+\begin{center}
+\includegraphics[width=.3\linewidth]{gm0}
+\end{center}
+\item generate a sample from a selected Gaussian
+\begin{center}
+\includegraphics[width=.3\linewidth]{gm1}
+\includegraphics[width=.3\linewidth]{gm2}
+\includegraphics[width=.3\linewidth]{gm3}
+\end{center}
+\end{itemize}
+\end{column}
+\begin{column}{0.5\columnwidth}
+\begin{itemize}
+\item total distribution is not a Gaussian
+\end{itemize}
+\begin{center}
+\colorbox{white}{
+  \includegraphics[width=.9\linewidth]{gm}
+}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[label={sec:org7e567ef}]{global extension}
+\begin{center}
+\only<1| handout:0>{
+  \includegraphics[width=.7\linewidth]{global_extension0}\\
+}
+\only<2| handout:0>{
+  \includegraphics[width=.7\linewidth]{global_extension1}\\
+}
+\only<3>{
+  \includegraphics[width=.7\linewidth]{global_extension}\\
+}
+\end{center}
+\end{frame}
+
+\begin{frame}[label={sec:org8166961}]{local extension}
+\begin{center}
+\only<1| handout:0>{
+  \includegraphics[width=.7\linewidth]{local_extension0}\\
+}
+\only<2| handout:0>{
+  \includegraphics[width=.7\linewidth]{local_extension1}\\
+}
+\only<3>{
+  \includegraphics[width=.7\linewidth]{local_extension}\\
+}
+\end{center}
+\end{frame}
+
+\section{Problem Formulation}
+\label{sec:org759ca34}
+\subsection{boosting algorithm}
+\label{sec:org92ac0ac}
+\begin{frame}[label={sec:orgc688c39}]{Problem Formulation}
+\begin{itemize}
+\item problem
+\begin{itemize}
+\item predict labels \(y\in\mathcal{Y}\) from given features
+\(\boldsymbol{x}\in\mathcal{X}\)
+\end{itemize}
+\item notation
+\begin{itemize}
+\item \structure{classifier}:
+set-valued function \(h\)
+\begin{equation}
+  h: \boldsymbol{x}\in\mathcal{X}\mapsto\mathcal{C}\subset\mathcal{Y}
+\end{equation}
+\item \structure{decision function}:
+another representation of classifier
+\begin{equation}
+  f(\boldsymbol{x},y)
+  =
+  \begin{cases}
+    1,& \text{if } y\in h(\boldsymbol{x}),\\
+    0,& \text{otherwise},
+  \end{cases}
+\end{equation}
+\item \structure{majority vote}: 
+linear combination of multiple classifiers
+\begin{equation}
+  H(\boldsymbol{x})=\arg\max_{y\in\mathcal{Y}}%F(\boldsymbol{x},y).
+  \sum_{t=1}^{T}\alpha_t f_t(\boldsymbol{x},y)
+\end{equation}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label={sec:org0817b00}]{Boosting Algorithm (1)}
+\begin{block}{(start)}
+\begin{itemize}
+\item \alert{input:}\\[0pt]
+\(n\) samples$\backslash$;
+\(\{(\boldsymbol{x}_i,y_i); \boldsymbol{x}_i\in\mathcal{X},y_i\in\mathcal{Y}, i=1,\dots,n\}\),\\[0pt]
+increasing convex function \(U\).
+\item \alert{initialize:}\\[0pt]
+distribution \(D_1(i,y)=1/n(|\mathcal{Y}|-1)\;(i=1,\dots,n)\),\\[0pt]
+combined decision function \(F_0(\boldsymbol{x},y)=0\).
+\item \alert{repeat:}
+repeat following steps (\(t=1,\dots,T\)).
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org96e89a5}]{Boosting Algorithm (2)}
+\begin{block}{(iteration)}
+\begin{itemize}
+\item \alert{step 1:}
+select a decision function \(f\) (classifier \(h\)) 
+which (approximately) minimizes 
+with a distribution \(D_t\):
+\begin{equation}
+  \epsilon_t(f) 
+  =\sum_{i=1}^{n}\sum_{y\not=y_i}
+  \frac{f(\boldsymbol{x}_i,y)-f(\boldsymbol{x}_i,y_i)+1}{2} D_t(i,y)
+\end{equation}
+\begin{equation}
+  f_t(\boldsymbol{x},y)
+  =\arg\min_{f\in\mathcal{F}}\epsilon_t(f).
+\end{equation}
+\end{itemize}
+\end{block}
+\end{frame}
+\begin{frame}[label={sec:org6429079}]{Boosting Algorithm (3)}
+\begin{block}{(iteration)}
+\begin{itemize}
+\item \alert{step 2:}
+calculate reliability \(\alpha_t\):
+\begin{align}
+  \alpha_t 
+  &=\arg\min_{\alpha}\sum_{i=1}^n\sum_{y\in\mathcal{Y}}
+    U\Bigl(F_{t-1}(\boldsymbol{x}_i,y)
+    +\alpha f_{t}(\boldsymbol{x}_i,y)\\
+  &\phantom{\arg\min_{\alpha}\sum_{i=1}^n
+    \sum_{y\in\mathcal{Y}}U}\quad
+    -F_{t-1}(\boldsymbol{x}_i,y_i)
+    -\alpha f_{t}(\boldsymbol{x}_i,y_i)\Bigr).
+\end{align}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org7e1ffd0}]{Boosting Algorithm (4)}
+\begin{block}{(iteration)}
+\begin{itemize}
+\item \alert{step 3:}
+update the combined decision function \(F_t\) and the distribution \(D_t\):
+\begin{equation}
+  F_{t}(\boldsymbol{x},y)
+  =F_{t-1}(\boldsymbol{x},y)+\alpha_{t}f_{t}(\boldsymbol{x},y),
+\end{equation}
+\begin{align}
+  D_{t+1}(i,y)\propto
+  & U'\left(F_{t}(\boldsymbol{x}_i,y)
+    -F_{t}(\boldsymbol{x}_i,y_i)\right),\\
+  &\quad\text{where }
+    \sum_{i=1}^n\sum_{y\not=y_i}D_{t+1}(i,y)=1.
+\end{align}
+\end{itemize}
+\end{block}
+\end{frame}
+\begin{frame}[label={sec:orgad7b272}]{Boosting Algorithm (5)}
+\begin{block}{(end)}
+\begin{itemize}
+\item \alert{output:}\\[0pt]
+construct a majority vote classifier:
+\begin{align}
+  H(\boldsymbol{x})
+  &=\arg\max_{y\in\mathcal{Y}}F_{T}(\boldsymbol{x},y)\\
+  &=\arg\max_{y\in\mathcal{Y}}\sum_{t=1}^T\alpha_{t}f_{t}(\boldsymbol{x},y).
+\end{align}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org09acdfe}]{AdaBoost Algorithm}
+special case of boosting algorithm:
+\begin{itemize}
+\item \(U(z)=\exp(z)\) (following steps are simplified)
+\begin{itemize}
+\item \alert{step 2:}
+\begin{equation}
+  \alpha_t 
+  = \frac{1}{2} \log \frac{1-\epsilon_t(f_t)}{\epsilon_t(f_t)},
+\end{equation}
+\item \alert{step 3:}
+\begin{equation}
+  D_{t+1}(i,y) \propto 
+  \exp \{F_t(\boldsymbol{x}_i,y)-F_t(\boldsymbol{x}_i,y_i)\}
+\end{equation}
+\end{itemize}
+(\cite{FreundSchapire1997})
+\end{itemize}
+\end{frame}
+
+\subsection{geometrical view of boosting}
+\label{sec:orgff15e79}
+\begin{frame}[label={sec:org6d0b304}]{Boosting Algorithm (1)}
+\begin{block}{(start)}
+\begin{itemize}
+\item \alert{input:}\\[0pt]
+\(n\) samples$\backslash$;
+\(\{(\boldsymbol{x}_i,y_i); \boldsymbol{x}_i\in\mathcal{X},y_i\in\mathcal{Y}, i=1,\dots,n\}\),\\[0pt]
+increasing convex function \(U\).
+\item \alert{initialize:}\\[0pt]
+\(q_0(y|\boldsymbol{x})\)
+(set \(\xi(q_0)=0\) for simplicity, where \(\xi=(U')^{-1}\))
+\item \alert{repeat:}
+repeat following steps (\(t=1,\dots,T\)).
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org0d6ce77}]{Boosting Algorithm (2)}
+\begin{block}{(iteration)}
+\begin{itemize}
+\item \alert{step 1:}
+select decision function \(f_t\) (classifier \(h_t\))
+such that 
+\(f-b'\) and \(q_{t-1}-\tilde{p}\)
+should direct as similar as possible:
+\begin{align}
+  f_t(\boldsymbol{x},y)
+  &=\arg\max_{f\in\mathcal{F}}
+    \langle q_{t-1}-\tilde{p},f-b'\rangle_{\tilde{\mu}}
+    % \\
+    % &=\arg\max_{f\in\mathcal{F}}
+    % \langle q_{t-1},f-\bar{f}\rangle_{\tilde{\mu}}
+    % \\&D_{t}(i,y)\propto q_{t-1}(y|\boldsymbol{x}_i)
+\end{align}
+where
+\begin{equation}
+  q=u\Bigl(\xi(q_{t-1})+\alpha f-b(\alpha)\Bigr),\quad u=U'.
+\end{equation}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org0b6ba94}]{}
+\begin{center}
+\includegraphics[width=.7\linewidth]{geoboost0}
+\end{center}
+\end{frame}
+
+\begin{frame}[label={sec:orga6f004b}]{Boosting Algorithm (3)}
+\begin{block}{(iteration)}
+\begin{itemize}
+\item \alert{step 2:}
+with one dimensional model
+\begin{equation}
+  \mathcal{Q}_t
+  =\biggl\{q\Bigm|
+  \xi(q)=
+  \xi(q_{t-1})+\alpha f_t-b_t(\alpha),\;\alpha\in R\biggr\}
+\end{equation}
+
+construct orthogonal foliation
+\(\{\mathcal{T}(q);q\in\mathcal{Q}_t\}\) as
+\begin{equation}
+  \mathcal{T}(q)
+  =
+  \left\{ p\in\mathcal{P}|
+    \langle p-q,f_{t}-b'\rangle_{\tilde{\mu}}=0
+  \right\},
+\end{equation}
+then find \(\alpha_t\) with a leaf of the empirical distribution
+\(\tilde{p}\) and model \(\mathcal{Q}_t\):
+\begin{equation}
+  \alpha_t
+  % =\arg\min_{\alpha} L_U(q)
+  =\arg\min_{q\in\mathcal{Q}_t}
+  \sum_{i=1}^{n}
+  \left[
+    \sum_{y\in\mathcal{Y}}U\bigl(\xi(q(y|\boldsymbol{x}_i))\bigr)
+    -\xi(q(y_i|\boldsymbol{x}_i))
+  \right].
+\end{equation}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:orgfb17494}]{}
+\begin{center}
+\includegraphics[width=.7\linewidth]{geoboost1}
+\end{center}
+\end{frame}
+
+\begin{frame}[label={sec:org261e9c8}]{Boosting Algorithm (4)}
+\begin{block}{(iteration)}
+\begin{itemize}
+\item \alert{step 3:}
+update \(q_t\):
+\begin{equation}
+  q_{t}(y|\boldsymbol{x})
+  =u\Bigl(\xi(q_{t-1}(y|\boldsymbol{x}))
+  +\alpha_t f_t(\boldsymbol{x},y)
+  -b_t(\boldsymbol{x},\alpha_t)\Bigr).
+\end{equation}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:orgfc50cde}]{}
+\begin{center}
+\includegraphics[width=.7\linewidth]{geoboost2}
+\end{center}
+\end{frame}
+
+\begin{frame}[label={sec:org8f58e5e}]{}
+\begin{center}
+\includegraphics[width=.7\linewidth]{geoboost3}
+\end{center}
+\end{frame}
+
+\begin{frame}[label={sec:org89c95ea}]{}
+\begin{center}
+\includegraphics[width=.7\linewidth]{geoboost4}
+\end{center}
+\end{frame}
+
+\begin{frame}[label={sec:org02b8d86}]{Boosting Algorithm (5)}
+\begin{block}{(end)}
+\begin{itemize}
+\item \alert{output:} \\[0pt]
+construct a majority vote classifier:
+\begin{equation}
+  H(\boldsymbol{x})
+  =\arg\max_{y\in\mathcal{Y}}F_{T}(\boldsymbol{x},y)
+  =\arg\max_{y\in\mathcal{Y}}\sum_{t=1}^T\alpha_{t}f_{t}(\boldsymbol{x},y).
+\end{equation}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[label={sec:org77bdf0b}]{Mechanism of Boosting}
+\begin{itemize}
+\item global model extension:
+\begin{itemize}
+\item by using appropriately weighted training data,
+the learning model is extended to the direction to which
+the total performance can be improved
+\item by extending the search space to outside of probability
+distributions,
+an efficient algorithm (coordinate descent) is derived
+\end{itemize}
+\end{itemize}
+\begin{center}
+\includegraphics[width=.4\textwidth]{geoboost}
+\end{center}
+\nocite{Murata_etal2004}
+\end{frame}
+
+\section{Illustrative Example}
+\label{sec:org694af88}
+\subsection{toy examples}
+\label{sec:org3e647c3}
+\againframe{sec:orgc5740e9}
+
+\begin{frame}[label={sec:org6422b3d}]{}
+\begin{center}
+first round\\
+\includegraphics[height=.42\textheight]{sample}
+\hspace*{20pt}
+\includegraphics[height=.42\textheight]{cls1}
+\\
+\includegraphics[height=.42\textheight]{res1}
+\hspace*{20pt}
+\hspace*{.42\textheight}
+\end{center}
+\end{frame}
+
+\begin{frame}[label={sec:org4c5bfc0}]{}
+\begin{center}
+second round\\
+\includegraphics[height=.42\textheight]{wgt1}
+\hspace*{20pt}
+\includegraphics[height=.42\textheight]{cls2}
+\\
+\includegraphics[height=.42\textheight]{res2}
+\hspace*{20pt}
+\hspace*{.42\textheight}
+\end{center}
+\end{frame}
+
+\begin{frame}[label={sec:org16cd452}]{}
+\begin{center}
+third round\\
+\includegraphics[height=.42\textheight]{wgt2}
+\hspace*{20pt}
+\includegraphics[height=.42\textheight]{cls3}
+\\
+\includegraphics[height=.42\textheight]{res3}
+\hspace*{20pt}
+\hspace*{.42\textheight}
+\end{center}
+\end{frame}
+
+\begin{frame}[label={sec:orge066d8c}]{}
+\begin{center}
+sample weights at each round\\
+\includegraphics[height=.20\textheight]{wgt1}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt2}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt3}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt4}
+\\
+\includegraphics[height=.20\textheight]{wgt5}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt6}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt7}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt8}
+\\
+\includegraphics[height=.20\textheight]{wgt9}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt10}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt11}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt12}
+\\
+\includegraphics[height=.20\textheight]{wgt13}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt14}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt15}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt16}
+\end{center}
+\end{frame}
+
+\begin{frame}[label={sec:org0041fae}]{}
+\begin{center}
+obtained classifier at each round\\
+\includegraphics[height=.20\textheight]{cls1}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls2}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls3}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls4}
+\\
+\includegraphics[height=.20\textheight]{cls5}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls6}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls7}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls8}
+\\
+\includegraphics[height=.20\textheight]{cls9}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls10}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls11}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls12}
+\\
+\includegraphics[height=.20\textheight]{cls13}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls14}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls15}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls16}
+\end{center}
+\end{frame}
+
+\againframe{sec:orgf92c82d}
+
+\begin{frame}[label={sec:org8bf4c13}]{Error Reduction by Boosting}
+\begin{center}
+classification error
+\end{center}
+\begin{columns}
+\begin{column}{0.5\columnwidth}
+\begin{center}
+\includegraphics[width=.8\linewidth]{before} \\[0pt]
+without boosting
+\end{center}
+\end{column}
+\begin{column}{0.5\columnwidth}
+\begin{center}
+\includegraphics[width=.8\linewidth]{after} \\[0pt]
+with boosting
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+\subsection{application to face detection}
+\label{sec:org92e4973}
+\begin{frame}[label={sec:orga768f57}]{Real World Application}
+\begin{exampleblock}{Face Detection}\label{sec:orgc55b87e}
+\fullcite{ViolaJones2004}
+\end{exampleblock}
+\begin{itemize}
+\item famous boosting application to computer vision
+\item adopt simple rectangle detectors as weak learners
+\item construct an efficient classifier with AdaBoost
+\end{itemize}
+
+\nocite{ViolaJones2004,DomingoWatanabe2000colt}
+\end{frame}
+\section{Conclusion}
+\label{sec:org2b511f8}
+\begin{frame}[label={sec:org95f68cc}]{Concluding Remarks}
+we presented the following
+
+\begin{itemize}
+\item some characterization of mixture models
+\item some geometrical properties of \(U\) functions
+\begin{itemize}
+\item coordinate descent algorithm
+\item Pythagorean relation
+\end{itemize}
+\end{itemize}
+
+in addition, possible extensions would be
+
+\begin{itemize}
+\item characterization of \(U\)
+\item stopping rules for the number of boosting
+\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{References}
+\printbibliography[heading=none]
+\end{frame}
+\end{document}

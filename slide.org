@@ -1,0 +1,657 @@
+#+TITLE: Boosting by Well-Designed Ensemble
+#+SUBTITLE: geometrical view of ensemble learning
+#+AUTHOR: Noboru Murata
+#+EMAIL: noboru.murata@gmail.com
+#+DATE: \today
+#+DESCRIPTION: based on Murata et al (2004), doi:10.1162/089976604323057452
+#+KEYWORDS: information geometry, boosting, bagging, ensemble learning
+#+LANGUAGE: en
+#+STARTUP: beamer hidestars content indent
+:BEAMER:
+#+OPTIONS: H:3 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS: TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+# #+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:https://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+HTML_LINK_UP:
+#+HTML_LINK_HOME:
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [fleqn,aspectratio=1610]
+#+BEAMER_HEADER: \usepackage[toc=none]{mytalk}
+# #+BEAMER_HEADER: \usepackage[toc=none,font=heavy]{mytalk}
+#+BEAMER_HEADER: \addbibresource{papers.bib}
+#+BEAMER_HEADER: \graphicspath{{figs/}{refs/}}
+#+BEAMER_HEADER: \DeclareGraphicsExtensions{.pdf,.png,.eps,.jpg}
+#+BEAMER_HEADER: \institute{\url{https://noboru-murata.github.io/}}
+# #+BEAMER_HEADER: \institute[WASEDA]{Waseda University\\\url{https://noboru-murata.github.io/}}
+# #+BEAMER_HEADER: \titlegraphic{\includegraphics[height=1.5cm]{symbol_waseda_3.jpg}
+# #+BEAMER_HEADER:    \includegraphics[height=1.5cm,viewport=0 0 150 150,clip]{UTlogo.jpg}
+# #+BEAMER_HEADER:    \includegraphics[height=1.5cm]{nict-logo-new2.png}}
+# #+BEAMER_HEADER: \myLogo{\lower9pt\hbox{
+# #+BEAMER_HEADER:    \reflectbox{\includegraphics[height=26pt]{milk_gray.png}}
+# #+BEAMER_HEADER:    \kern-8pt\includegraphics[height=18pt,width=22pt]{milk_sepia.png}}}
+#+COLUMNS: "%45ITEM %10BEAMER_env(Env) %10BEAMER_act(Act) %4BEAMER_col(Col) %8BEAMER_opt(Opt)"
+# column view: C-c C-x C-c / C-c C-c or q
+# beamer block: C-c C-b
+:END:
+
+* Introduction
+** majority vote
+*** Majority Vote
+- <1-> consider participating a quiz show where 
+  threesome teams compete in answering various genre questions \\
+  (10 genres such as history, politics, entertainment, sports)
+  #+BEAMER: \vspace{10pt}
+  - <2-> good threesome
+    - <3-> each member can answer 8 genres
+    - <3-> all the members are weak in entertainment and sports
+    - <3-> *stereo-typed good members*
+  #+BEAMER: \vspace{10pt}
+- <2-> poor threesome 
+  - <3-> each member can answer 6 genres
+  - <3-> all the member are weak in different genres
+  - <3-> *poor but varied members*
+
+*** Ensemble Learning
+#+begin_center
+#+begin_export latex
+\begin{tabular}{cc}
+  \includegraphics[page=1,width=.4\linewidth]{vote0}
+  &\includegraphics[page=1,width=.4\linewidth]{vote1}\\
+  good threesome
+  &\alert{poor threesome}
+\end{tabular}
+#+end_export
+#+end_center
+**** essence of ensemble learning                           :B_alertblock:
+:PROPERTIES:
+:BEAMER_env: alertblock
+:BEAMER_act: <2->
+:END:
+-  collect as varied individuals as possible
+-  each individual does better than random guess
+(\cite{Freund1995,FreundSchapire1997})  
+
+*** Simple Example
+classification problem:
+-  predict label \(y\in\mathcal{Y}\) from corresponding
+  features \(\boldsymbol{x}\in\mathcal{X}\) 
+-  construct a classifier \(h(\boldsymbol{x})=\hat{y}\) from finite samples
+#+begin_center
+\includegraphics[width=.4\linewidth]{sample}
+#+end_center
+
+*** Effect of Boosting
+#+begin_center
+obtained classifier
+#+end_center
+**** left                                                          :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+begin_center
+\includegraphics[width=.8\linewidth]{before3d} \\
+without boosting
+#+end_center
+**** right                                                         :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+begin_center
+\includegraphics[width=.8\linewidth]{after3d} \\
+with boosting
+#+end_center
+
+** geometrical view
+*** normal mixture
+**** left                                                          :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+- select a Gaussian subject to categorical distribution
+  #+begin_center
+  \includegraphics[width=.3\linewidth]{gm0}
+  #+end_center
+- generate a sample from a selected Gaussian
+  #+begin_center
+  \includegraphics[width=.3\linewidth]{gm1}
+  \includegraphics[width=.3\linewidth]{gm2}
+  \includegraphics[width=.3\linewidth]{gm3}
+  #+end_center
+**** right                                                         :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+-  total distribution is not a Gaussian
+#+begin_center
+#+begin_export latex
+\colorbox{white}{
+  \includegraphics[width=.9\linewidth]{gm}
+}
+#+end_export
+#+end_center
+
+*** global extension
+#+begin_center
+#+begin_export latex
+\only<1| handout:0>{
+  \includegraphics[width=.7\linewidth]{global_extension0}\\
+}
+\only<2| handout:0>{
+  \includegraphics[width=.7\linewidth]{global_extension1}\\
+}
+\only<3>{
+  \includegraphics[width=.7\linewidth]{global_extension}\\
+}
+#+end_export
+#+end_center
+
+*** local extension
+#+begin_center
+#+begin_export latex
+\only<1| handout:0>{
+  \includegraphics[width=.7\linewidth]{local_extension0}\\
+}
+\only<2| handout:0>{
+  \includegraphics[width=.7\linewidth]{local_extension1}\\
+}
+\only<3>{
+  \includegraphics[width=.7\linewidth]{local_extension}\\
+}
+#+end_export
+#+end_center
+
+* Problem Formulation
+** boosting algorithm
+*** Problem Formulation
+- problem
+  - predict labels \(y\in\mathcal{Y}\) from given features
+    \(\boldsymbol{x}\in\mathcal{X}\)
+- notation
+  - \structure{classifier}:
+    set-valued function \(h\)
+    \begin{equation}
+      h: \boldsymbol{x}\in\mathcal{X}\mapsto\mathcal{C}\subset\mathcal{Y}
+    \end{equation}
+  - \structure{decision function}:
+    another representation of classifier
+    \begin{equation}
+      f(\boldsymbol{x},y)
+      =
+      \begin{cases}
+        1,& \text{if } y\in h(\boldsymbol{x}),\\
+        0,& \text{otherwise},
+      \end{cases}
+    \end{equation}
+  - \structure{majority vote}: 
+    linear combination of multiple classifiers
+    \begin{equation}
+      H(\boldsymbol{x})=\arg\max_{y\in\mathcal{Y}}%F(\boldsymbol{x},y).
+      \sum_{t=1}^{T}\alpha_t f_t(\boldsymbol{x},y)
+    \end{equation}
+    
+*** Boosting Algorithm (1)
+**** (start)                                                     :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- *input:*\\
+  \(n\) samples\;
+  \(\{(\boldsymbol{x}_i,y_i); \boldsymbol{x}_i\in\mathcal{X},y_i\in\mathcal{Y}, i=1,\dots,n\}\),\\
+  increasing convex function \(U\).
+- *initialize:*\\
+  distribution \(D_1(i,y)=1/n(|\mathcal{Y}|-1)\;(i=1,\dots,n)\),\\
+  combined decision function \(F_0(\boldsymbol{x},y)=0\).
+- *repeat:*
+  repeat following steps (\(t=1,\dots,T\)).
+
+*** Boosting Algorithm (2)
+**** (iteration)                                                 :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- *step 1:*
+  select a decision function \(f\) (classifier \(h\)) 
+  which (approximately) minimizes 
+  with a distribution \(D_t\):
+  \begin{equation}
+    \epsilon_t(f) 
+    =\sum_{i=1}^{n}\sum_{y\not=y_i}
+    \frac{f(\boldsymbol{x}_i,y)-f(\boldsymbol{x}_i,y_i)+1}{2} D_t(i,y)
+  \end{equation}
+  \begin{equation}
+    f_t(\boldsymbol{x},y)
+    =\arg\min_{f\in\mathcal{F}}\epsilon_t(f).
+  \end{equation}
+*** Boosting Algorithm (3)
+**** (iteration)                                                 :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- *step 2:*
+  calculate reliability \(\alpha_t\):
+  \begin{align}
+    \alpha_t 
+    &=\arg\min_{\alpha}\sum_{i=1}^n\sum_{y\in\mathcal{Y}}
+      U\Bigl(F_{t-1}(\boldsymbol{x}_i,y)
+      +\alpha f_{t}(\boldsymbol{x}_i,y)\\
+    &\phantom{\arg\min_{\alpha}\sum_{i=1}^n
+      \sum_{y\in\mathcal{Y}}U}\quad
+      -F_{t-1}(\boldsymbol{x}_i,y_i)
+      -\alpha f_{t}(\boldsymbol{x}_i,y_i)\Bigr).
+  \end{align}
+
+*** Boosting Algorithm (4)
+**** (iteration)                                                 :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- *step 3:*
+  update the combined decision function \(F_t\) and the distribution \(D_t\):
+  \begin{equation}
+    F_{t}(\boldsymbol{x},y)
+    =F_{t-1}(\boldsymbol{x},y)+\alpha_{t}f_{t}(\boldsymbol{x},y),
+  \end{equation}
+  \begin{align}
+    D_{t+1}(i,y)\propto
+    & U'\left(F_{t}(\boldsymbol{x}_i,y)
+      -F_{t}(\boldsymbol{x}_i,y_i)\right),\\
+    &\quad\text{where }
+      \sum_{i=1}^n\sum_{y\not=y_i}D_{t+1}(i,y)=1.
+  \end{align}
+*** Boosting Algorithm (5)
+**** (end)                                                       :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- *output:*\\
+  construct a majority vote classifier:
+  \begin{align}
+    H(\boldsymbol{x})
+    &=\arg\max_{y\in\mathcal{Y}}F_{T}(\boldsymbol{x},y)\\
+    &=\arg\max_{y\in\mathcal{Y}}\sum_{t=1}^T\alpha_{t}f_{t}(\boldsymbol{x},y).
+  \end{align}
+
+*** AdaBoost Algorithm
+special case of boosting algorithm:
+-  \(U(z)=\exp(z)\) (following steps are simplified)
+  - *step 2:*
+    \begin{equation}
+      \alpha_t 
+      = \frac{1}{2} \log \frac{1-\epsilon_t(f_t)}{\epsilon_t(f_t)},
+    \end{equation}
+  - *step 3:*
+    \begin{equation}
+      D_{t+1}(i,y) \propto 
+      \exp \{F_t(\boldsymbol{x}_i,y)-F_t(\boldsymbol{x}_i,y_i)\}
+    \end{equation}
+  (\cite{FreundSchapire1997})
+
+** geometrical view of boosting
+*** Boosting Algorithm (1)
+**** (start)                                                     :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- *input:*\\
+  \(n\) samples\;
+  \(\{(\boldsymbol{x}_i,y_i); \boldsymbol{x}_i\in\mathcal{X},y_i\in\mathcal{Y}, i=1,\dots,n\}\),\\
+  increasing convex function \(U\).
+- *initialize:*\\
+  \(q_0(y|\boldsymbol{x})\)
+  (set \(\xi(q_0)=0\) for simplicity, where \(\xi=(U')^{-1}\))
+- *repeat:*
+  repeat following steps (\(t=1,\dots,T\)).
+
+*** Boosting Algorithm (2)
+**** (iteration)                                                 :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- *step 1:*
+  select decision function \(f_t\) (classifier \(h_t\))
+  such that 
+  \(f-b'\) and \(q_{t-1}-\tilde{p}\)
+  should direct as similar as possible:
+  \begin{align}
+    f_t(\boldsymbol{x},y)
+    &=\arg\max_{f\in\mathcal{F}}
+      \langle q_{t-1}-\tilde{p},f-b'\rangle_{\tilde{\mu}}
+      % \\
+      % &=\arg\max_{f\in\mathcal{F}}
+      % \langle q_{t-1},f-\bar{f}\rangle_{\tilde{\mu}}
+      % \\&D_{t}(i,y)\propto q_{t-1}(y|\boldsymbol{x}_i)
+  \end{align}
+  where
+  \begin{equation}
+    q=u\Bigl(\xi(q_{t-1})+\alpha f-b(\alpha)\Bigr),\quad u=U'.
+  \end{equation}
+
+*** 
+#+begin_center
+\includegraphics[width=.7\linewidth]{geoboost0}
+#+end_center
+
+*** Boosting Algorithm (3)
+**** (iteration)                                                 :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- *step 2:*
+  with one dimensional model
+  \begin{equation}
+    \mathcal{Q}_t
+    =\biggl\{q\Bigm|
+    \xi(q)=
+    \xi(q_{t-1})+\alpha f_t-b_t(\alpha),\;\alpha\in R\biggr\}
+  \end{equation}
+  # \begin{equation}
+  # \mathcal{Q}_t
+  #   =\biggl\{q\Bigm|
+  #   \xi(q(y|\boldsymbol{x}))=
+  #   \xi(q_{t-1}(y|\boldsymbol{x}))
+  #   +\alpha f_t(\boldsymbol{x},y)-b_t(\boldsymbol{x},\alpha),\;\alpha\in R
+  #   \biggr\}
+  # \end{equation}
+  construct orthogonal foliation
+  \(\{\mathcal{T}(q);q\in\mathcal{Q}_t\}\) as
+  \begin{equation}
+    \mathcal{T}(q)
+    =
+    \left\{ p\in\mathcal{P}|
+      \langle p-q,f_{t}-b'\rangle_{\tilde{\mu}}=0
+    \right\},
+  \end{equation}
+  then find \(\alpha_t\) with a leaf of the empirical distribution
+  \(\tilde{p}\) and model \(\mathcal{Q}_t\):
+  \begin{equation}
+    \alpha_t
+    % =\arg\min_{\alpha} L_U(q)
+    =\arg\min_{q\in\mathcal{Q}_t}
+    \sum_{i=1}^{n}
+    \left[
+      \sum_{y\in\mathcal{Y}}U\bigl(\xi(q(y|\boldsymbol{x}_i))\bigr)
+      -\xi(q(y_i|\boldsymbol{x}_i))
+    \right].
+  \end{equation}
+
+*** 
+#+begin_center
+\includegraphics[width=.7\linewidth]{geoboost1}
+#+end_center
+
+*** Boosting Algorithm (4)
+**** (iteration)                                                 :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- *step 3:*
+  update \(q_t\):
+  \begin{equation}
+    q_{t}(y|\boldsymbol{x})
+    =u\Bigl(\xi(q_{t-1}(y|\boldsymbol{x}))
+    +\alpha_t f_t(\boldsymbol{x},y)
+    -b_t(\boldsymbol{x},\alpha_t)\Bigr).
+  \end{equation}   
+
+*** 
+#+begin_center
+\includegraphics[width=.7\linewidth]{geoboost2}
+#+end_center
+
+*** 
+#+begin_center
+\includegraphics[width=.7\linewidth]{geoboost3}
+#+end_center
+
+*** 
+#+begin_center
+\includegraphics[width=.7\linewidth]{geoboost4}
+#+end_center
+
+*** Boosting Algorithm (5)
+**** (end)                                                       :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- *output:* \\
+  construct a majority vote classifier:
+  \begin{equation}
+    H(\boldsymbol{x})
+    =\arg\max_{y\in\mathcal{Y}}F_{T}(\boldsymbol{x},y)
+    =\arg\max_{y\in\mathcal{Y}}\sum_{t=1}^T\alpha_{t}f_{t}(\boldsymbol{x},y).
+  \end{equation}
+
+*** Mechanism of Boosting
+-  global model extension:
+  -  by using appropriately weighted training data,
+    the learning model is extended to the direction to which
+    the total performance can be improved
+  -  by extending the search space to outside of probability
+    distributions,
+    an efficient algorithm (coordinate descent) is derived
+#+begin_center
+\includegraphics[width=.4\textwidth]{geoboost}
+#+end_center
+\nocite{Murata_etal2004}
+
+* Illustrative Example
+** toy examples
+*** Simple Example again                                     :B_againframe:
+:PROPERTIES:
+:BEAMER_env: againframe
+:BEAMER_ref: *Simple Example
+:BEAMER_act:
+:END:
+
+*** 
+#+begin_center
+#+begin_export latex
+first round\\
+\includegraphics[height=.42\textheight]{sample}
+\hspace*{20pt}
+\includegraphics[height=.42\textheight]{cls1}
+\\
+\includegraphics[height=.42\textheight]{res1}
+\hspace*{20pt}
+\hspace*{.42\textheight}
+#+end_export
+#+end_center
+
+*** 
+#+begin_center
+#+begin_export latex
+second round\\
+\includegraphics[height=.42\textheight]{wgt1}
+\hspace*{20pt}
+\includegraphics[height=.42\textheight]{cls2}
+\\
+\includegraphics[height=.42\textheight]{res2}
+\hspace*{20pt}
+\hspace*{.42\textheight}
+#+end_export
+#+end_center
+
+*** 
+#+begin_center
+#+begin_export latex
+third round\\
+\includegraphics[height=.42\textheight]{wgt2}
+\hspace*{20pt}
+\includegraphics[height=.42\textheight]{cls3}
+\\
+\includegraphics[height=.42\textheight]{res3}
+\hspace*{20pt}
+\hspace*{.42\textheight}
+#+end_export
+#+end_center
+
+*** 
+#+begin_center
+#+begin_export latex
+sample weights at each round\\
+\includegraphics[height=.20\textheight]{wgt1}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt2}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt3}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt4}
+\\
+\includegraphics[height=.20\textheight]{wgt5}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt6}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt7}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt8}
+\\
+\includegraphics[height=.20\textheight]{wgt9}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt10}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt11}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt12}
+\\
+\includegraphics[height=.20\textheight]{wgt13}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt14}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt15}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{wgt16}
+#+end_export
+#+end_center
+
+*** 
+#+begin_center
+#+begin_export latex
+obtained classifier at each round\\
+\includegraphics[height=.20\textheight]{cls1}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls2}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls3}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls4}
+\\
+\includegraphics[height=.20\textheight]{cls5}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls6}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls7}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls8}
+\\
+\includegraphics[height=.20\textheight]{cls9}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls10}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls11}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls12}
+\\
+\includegraphics[height=.20\textheight]{cls13}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls14}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls15}
+\hspace*{5pt}
+\includegraphics[height=.20\textheight]{cls16}
+#+end_export
+#+end_center
+
+*** Effect of Boosting again                                 :B_againframe:
+:PROPERTIES:
+:BEAMER_env: againframe
+:BEAMER_ref: *Effect of Boosting
+:BEAMER_act:
+:END:
+
+*** Error Reduction by Boosting
+#+begin_center
+classification error
+#+end_center
+**** left                                                          :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+begin_center
+\includegraphics[width=.8\linewidth]{before} \\
+without boosting
+#+end_center
+**** right                                                         :BMCOL:
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+#+begin_center
+\includegraphics[width=.8\linewidth]{after} \\
+with boosting
+#+end_center
+
+** application to face detection
+*** Real World Application
+**** Face Detection                                       :B_exampleblock:
+:PROPERTIES:
+:BEAMER_env: exampleblock
+:END:
+\fullcite{ViolaJones2004}
+**** notes                                               :B_ignoreheading:
+:PROPERTIES:
+:BEAMER_env: ignoreheading
+:END:
+# Viola \& Jones (2001, 2004):
+-  famous boosting application to computer vision
+-  adopt simple rectangle detectors as weak learners
+-  construct an efficient classifier with AdaBoost
+# see figs 5,8,10 of \cite{ViolaJones2004}
+\nocite{ViolaJones2004,DomingoWatanabe2000colt}
+*** COMMENT
+#+begin_center
+#+begin_export latex
+\includegraphics[page=8, width=.9\linewidth,%
+trim=80 580 310 100, clip]%
+{ViolaJones2004}
+#+end_export
+#+end_center
+*** COMMENT
+#+begin_center
+#+begin_export latex
+\includegraphics[page=12, width=.7\linewidth,%
+trim=150 130 150 420, clip]%
+{ViolaJones2004}
+#+end_export
+#+end_center
+*** COMMENT
+#+begin_center
+#+begin_export latex
+\includegraphics[page=16, width=.7\linewidth,%
+trim=80 280 80 100, clip]%
+{ViolaJones2004}
+#+end_export
+#+end_center
+
+* Conclusion
+*** Concluding Remarks
+we presented the following
+# found
+-  some characterization of mixture models
+-  some geometrical properties of \(U\) functions
+  -  coordinate descent algorithm
+  -  Pythagorean relation
+
+in addition, possible extensions would be
+# in addition, possible application would be
+-  characterization of \(U\)
+-  stopping rules for the number of boosting
+
+*** References
+:PROPERTIES:
+:BEAMER_opt: allowframebreaks
+:END:
+\printbibliography[heading=none]
+
+* COMMENT File Local Variables
+# Local Variables:
+# End:
