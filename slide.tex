@@ -1,4 +1,4 @@
-% Created 2023-06-21 Wed 16:24
+% Created 2026-05-18 Mon 11:50
 % Intended LaTeX compiler: pdflatex
 \documentclass[fleqn,aspectratio=1610]{beamer}
 \author{Noboru Murata}
@@ -15,7 +15,7 @@
  pdftitle={Boosting by Well-Designed Ensemble},
  pdfkeywords={information geometry, boosting, bagging, ensemble learning},
  pdfsubject={based on Murata et al (2004), https://doi.org/10.1162/089976604323057452},
- pdfcreator={Emacs 28.2 (Org mode 9.6.4)}, 
+ pdfcreator={Emacs 30.2 (Org mode 9.8-pre)}, 
  pdflang={English}}
 \begin{document}
 
@@ -24,15 +24,14 @@
 \tableofcontents
 \end{frame}
 
-
 \section{Introduction}
-\label{sec:orgdf62fc8}
+\label{sec:org741b0f3}
 \subsection{majority vote}
-\label{sec:orgf52a847}
-\begin{frame}[label={sec:org0e0a9ac}]{Majority Vote}
+\label{sec:orgbed6476}
+\begin{frame}[label={sec:org9147118}]{Majority Vote}
 \begin{itemize}
 \item <1-> consider participating a quiz show where 
-threesome teams compete in answering various genre questions \\[0pt]
+threesome teams compete in answering various genre questions \\
 (10 genres such as history, politics, entertainment, sports)
 \vspace{10pt}
 \begin{itemize}
@@ -44,6 +43,7 @@ threesome teams compete in answering various genre questions \\[0pt]
 \end{itemize}
 \end{itemize}
 \vspace{10pt}
+\begin{itemize}
 \item <2-> poor threesome 
 \begin{itemize}
 \item <3-> each member can answer 6 genres
@@ -51,9 +51,9 @@ threesome teams compete in answering various genre questions \\[0pt]
 \item <3-> \alert{poor but varied members}
 \end{itemize}
 \end{itemize}
+\end{itemize}
 \end{frame}
-
-\begin{frame}[label={sec:orgca0193b}]{Ensemble Learning}
+\begin{frame}[label={sec:orga7d992f}]{Ensemble Learning}
 \begin{center}
 \begin{tabular}{cc}
   \includegraphics[page=1,width=.4\linewidth]{vote0}
@@ -70,8 +70,7 @@ threesome teams compete in answering various genre questions \\[0pt]
 (\cite{Freund1995,FreundSchapire1997})  
 \end{alertblock}
 \end{frame}
-
-\begin{frame}[label={sec:orgc5740e9}]{Simple Example}
+\begin{frame}[label={sec:org87beef7}]{Simple Example}
 classification problem:
 \begin{itemize}
 \item predict label \(y\in\mathcal{Y}\) from corresponding
@@ -82,30 +81,28 @@ features \(\boldsymbol{x}\in\mathcal{X}\)
 \includegraphics[width=.4\linewidth]{sample}
 \end{center}
 \end{frame}
-
-\begin{frame}[label={sec:orgf92c82d}]{Effect of Boosting}
+\begin{frame}[label={sec:orgcdcfb96}]{Effect of Boosting}
 \begin{center}
 obtained classifier
 \end{center}
 \begin{columns}
 \begin{column}{0.5\columnwidth}
 \begin{center}
-\includegraphics[width=.8\linewidth]{before3d} \\[0pt]
+\includegraphics[width=.8\linewidth]{before3d} \\
 without boosting
 \end{center}
 \end{column}
 \begin{column}{0.5\columnwidth}
 \begin{center}
-\includegraphics[width=.8\linewidth]{after3d} \\[0pt]
+\includegraphics[width=.8\linewidth]{after3d} \\
 with boosting
 \end{center}
 \end{column}
 \end{columns}
 \end{frame}
-
 \subsection{geometrical view}
-\label{sec:orga47f139}
-\begin{frame}[label={sec:org3afc8ef}]{normal mixture}
+\label{sec:orge25962a}
+\begin{frame}[label={sec:orge1775f1}]{normal mixture}
 \begin{columns}
 \begin{column}{0.5\columnwidth}
 \begin{itemize}
@@ -133,8 +130,7 @@ with boosting
 \end{column}
 \end{columns}
 \end{frame}
-
-\begin{frame}[label={sec:org7e567ef}]{global extension}
+\begin{frame}[label={sec:org9ba3101}]{global extension}
 \begin{center}
 \only<1| handout:0>{
   \includegraphics[width=.7\linewidth]{global_extension0}\\
@@ -147,8 +143,7 @@ with boosting
 }
 \end{center}
 \end{frame}
-
-\begin{frame}[label={sec:org8166961}]{local extension}
+\begin{frame}[label={sec:org0f96a0f}]{local extension}
 \begin{center}
 \only<1| handout:0>{
   \includegraphics[width=.7\linewidth]{local_extension0}\\
@@ -161,12 +156,11 @@ with boosting
 }
 \end{center}
 \end{frame}
-
 \section{Problem Formulation}
-\label{sec:org759ca34}
+\label{sec:orgeb84d89}
 \subsection{boosting algorithm}
-\label{sec:org92ac0ac}
-\begin{frame}[label={sec:orgc688c39}]{Problem Formulation}
+\label{sec:org039f407}
+\begin{frame}[label={sec:orge8e56eb}]{Problem Formulation}
 \begin{itemize}
 \item problem
 \begin{itemize}
@@ -199,24 +193,22 @@ linear combination of multiple classifiers
 \end{itemize}
 \end{itemize}
 \end{frame}
-
-\begin{frame}[label={sec:org0817b00}]{Boosting Algorithm (1)}
+\begin{frame}[label={sec:org8579a92}]{Boosting Algorithm (1)}
 \begin{block}{(start)}
 \begin{itemize}
-\item \alert{input:}\\[0pt]
-\(n\) samples$\backslash$;
-\(\{(\boldsymbol{x}_i,y_i); \boldsymbol{x}_i\in\mathcal{X},y_i\in\mathcal{Y}, i=1,\dots,n\}\),\\[0pt]
+\item \alert{input:}\\
+\(n\) samples
+\(\{(\boldsymbol{x}_i,y_i); \boldsymbol{x}_i\in\mathcal{X},y_i\in\mathcal{Y}, i=1,\dots,n\}\),\\
 increasing convex function \(U\).
-\item \alert{initialize:}\\[0pt]
-distribution \(D_1(i,y)=1/n(|\mathcal{Y}|-1)\;(i=1,\dots,n)\),\\[0pt]
+\item \alert{initialize:}\\
+distribution \(D_1(i,y)=1/n(|\mathcal{Y}|-1)\;(i=1,\dots,n)\),\\
 combined decision function \(F_0(\boldsymbol{x},y)=0\).
 \item \alert{repeat:}
 repeat following steps (\(t=1,\dots,T\)).
 \end{itemize}
 \end{block}
 \end{frame}
-
-\begin{frame}[label={sec:org96e89a5}]{Boosting Algorithm (2)}
+\begin{frame}[label={sec:org2e234fb}]{Boosting Algorithm (2)}
 \begin{block}{(iteration)}
 \begin{itemize}
 \item \alert{step 1:}
@@ -235,26 +227,23 @@ with a distribution \(D_t\):
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org6429079}]{Boosting Algorithm (3)}
+\begin{frame}[label={sec:orgcc2f7c1}]{Boosting Algorithm (3)}
 \begin{block}{(iteration)}
 \begin{itemize}
 \item \alert{step 2:}
 calculate reliability \(\alpha_t\):
-\begin{align}
+\begin{equation}
   \alpha_t 
-  &=\arg\min_{\alpha}\sum_{i=1}^n\sum_{y\in\mathcal{Y}}
-    U\Bigl(F_{t-1}(\boldsymbol{x}_i,y)
-    +\alpha f_{t}(\boldsymbol{x}_i,y)\\
-  &\phantom{\arg\min_{\alpha}\sum_{i=1}^n
-    \sum_{y\in\mathcal{Y}}U}\quad
-    -F_{t-1}(\boldsymbol{x}_i,y_i)
-    -\alpha f_{t}(\boldsymbol{x}_i,y_i)\Bigr).
-\end{align}
+  =\arg\min_{\alpha}\sum_{i=1}^n\sum_{y\in\mathcal{Y}}
+  U\Bigl(F_{t-1}(\boldsymbol{x}_i,y)
+  +\alpha f_{t}(\boldsymbol{x}_i,y)
+  -F_{t-1}(\boldsymbol{x}_i,y_i)
+  -\alpha f_{t}(\boldsymbol{x}_i,y_i)\Bigr).
+\end{equation}
 \end{itemize}
 \end{block}
 \end{frame}
-
-\begin{frame}[label={sec:org7e1ffd0}]{Boosting Algorithm (4)}
+\begin{frame}[label={sec:org457c6fa}]{Boosting Algorithm (4)}
 \begin{block}{(iteration)}
 \begin{itemize}
 \item \alert{step 3:}
@@ -273,10 +262,10 @@ update the combined decision function \(F_t\) and the distribution \(D_t\):
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgad7b272}]{Boosting Algorithm (5)}
+\begin{frame}[label={sec:org3f7c1a2}]{Boosting Algorithm (5)}
 \begin{block}{(end)}
 \begin{itemize}
-\item \alert{output:}\\[0pt]
+\item \alert{output:}\\
 construct a majority vote classifier:
 \begin{align}
   H(\boldsymbol{x})
@@ -286,8 +275,7 @@ construct a majority vote classifier:
 \end{itemize}
 \end{block}
 \end{frame}
-
-\begin{frame}[label={sec:org09acdfe}]{AdaBoost Algorithm}
+\begin{frame}[label={sec:orga4f8d17}]{AdaBoost Algorithm}
 special case of boosting algorithm:
 \begin{itemize}
 \item \(U(z)=\exp(z)\) (following steps are simplified)
@@ -306,17 +294,16 @@ special case of boosting algorithm:
 (\cite{FreundSchapire1997})
 \end{itemize}
 \end{frame}
-
 \subsection{geometrical view of boosting}
-\label{sec:orgff15e79}
-\begin{frame}[label={sec:org6d0b304}]{Boosting Algorithm (1)}
+\label{sec:orgc71651c}
+\begin{frame}[label={sec:org171046b}]{Boosting Algorithm (1)}
 \begin{block}{(start)}
 \begin{itemize}
-\item \alert{input:}\\[0pt]
-\(n\) samples$\backslash$;
-\(\{(\boldsymbol{x}_i,y_i); \boldsymbol{x}_i\in\mathcal{X},y_i\in\mathcal{Y}, i=1,\dots,n\}\),\\[0pt]
+\item \alert{input:}\\
+\(n\) samples
+\(\{(\boldsymbol{x}_i,y_i); \boldsymbol{x}_i\in\mathcal{X},y_i\in\mathcal{Y}, i=1,\dots,n\}\),\\
 increasing convex function \(U\).
-\item \alert{initialize:}\\[0pt]
+\item \alert{initialize:}\\
 \(q_0(y|\boldsymbol{x})\)
 (set \(\xi(q_0)=0\) for simplicity, where \(\xi=(U')^{-1}\))
 \item \alert{repeat:}
@@ -324,8 +311,7 @@ repeat following steps (\(t=1,\dots,T\)).
 \end{itemize}
 \end{block}
 \end{frame}
-
-\begin{frame}[label={sec:org0d6ce77}]{Boosting Algorithm (2)}
+\begin{frame}[label={sec:org8d2aa9e}]{Boosting Algorithm (2)}
 \begin{block}{(iteration)}
 \begin{itemize}
 \item \alert{step 1:}
@@ -335,28 +321,22 @@ such that
 should direct as similar as possible:
 \begin{align}
   f_t(\boldsymbol{x},y)
-  &=\arg\max_{f\in\mathcal{F}}
-    \langle q_{t-1}-\tilde{p},f-b'\rangle_{\tilde{\mu}}
+  &=\arg\min_{f\in\mathcal{F}}
+    \langle q_{t-1}-\tilde{p},f-b'\rangle_{\tilde{\mu}}.
     % \\
     % &=\arg\max_{f\in\mathcal{F}}
     % \langle q_{t-1},f-\bar{f}\rangle_{\tilde{\mu}}
     % \\&D_{t}(i,y)\propto q_{t-1}(y|\boldsymbol{x}_i)
 \end{align}
-where
-\begin{equation}
-  q=u\Bigl(\xi(q_{t-1})+\alpha f-b(\alpha)\Bigr),\quad u=U'.
-\end{equation}
 \end{itemize}
 \end{block}
 \end{frame}
-
-\begin{frame}[label={sec:org0b6ba94}]{}
+\begin{frame}[label={sec:org1fe6a11}]{}
 \begin{center}
 \includegraphics[width=.7\linewidth]{geoboost0}
 \end{center}
 \end{frame}
-
-\begin{frame}[label={sec:orga6f004b}]{Boosting Algorithm (3)}
+\begin{frame}[label={sec:org60adb8e}]{Boosting Algorithm (3)}
 \begin{block}{(iteration)}
 \begin{itemize}
 \item \alert{step 2:}
@@ -378,7 +358,7 @@ construct orthogonal foliation
   \right\},
 \end{equation}
 then find \(\alpha_t\) with a leaf of the empirical distribution
-\(\tilde{p}\) and model \(\mathcal{Q}_t\):
+\(\tilde{p}\):
 \begin{equation}
   \alpha_t
   % =\arg\min_{\alpha} L_U(q)
@@ -392,14 +372,12 @@ then find \(\alpha_t\) with a leaf of the empirical distribution
 \end{itemize}
 \end{block}
 \end{frame}
-
-\begin{frame}[label={sec:orgfb17494}]{}
+\begin{frame}[label={sec:org2a6c671}]{}
 \begin{center}
 \includegraphics[width=.7\linewidth]{geoboost1}
 \end{center}
 \end{frame}
-
-\begin{frame}[label={sec:org261e9c8}]{Boosting Algorithm (4)}
+\begin{frame}[label={sec:orgd46e041}]{Boosting Algorithm (4)}
 \begin{block}{(iteration)}
 \begin{itemize}
 \item \alert{step 3:}
@@ -413,29 +391,25 @@ update \(q_t\):
 \end{itemize}
 \end{block}
 \end{frame}
-
-\begin{frame}[label={sec:orgfc50cde}]{}
+\begin{frame}[label={sec:org13555ab}]{}
 \begin{center}
 \includegraphics[width=.7\linewidth]{geoboost2}
 \end{center}
 \end{frame}
-
-\begin{frame}[label={sec:org8f58e5e}]{}
+\begin{frame}[label={sec:org0a0bc13}]{}
 \begin{center}
 \includegraphics[width=.7\linewidth]{geoboost3}
 \end{center}
 \end{frame}
-
-\begin{frame}[label={sec:org89c95ea}]{}
+\begin{frame}[label={sec:org889381a}]{}
 \begin{center}
 \includegraphics[width=.7\linewidth]{geoboost4}
 \end{center}
 \end{frame}
-
-\begin{frame}[label={sec:org02b8d86}]{Boosting Algorithm (5)}
+\begin{frame}[label={sec:org98603c9}]{Boosting Algorithm (5)}
 \begin{block}{(end)}
 \begin{itemize}
-\item \alert{output:} \\[0pt]
+\item \alert{output:} \\
 construct a majority vote classifier:
 \begin{equation}
   H(\boldsymbol{x})
@@ -445,8 +419,7 @@ construct a majority vote classifier:
 \end{itemize}
 \end{block}
 \end{frame}
-
-\begin{frame}[label={sec:org77bdf0b}]{Mechanism of Boosting}
+\begin{frame}[label={sec:orgcd3ac10}]{Mechanism of Boosting}
 \begin{itemize}
 \item global model extension:
 \begin{itemize}
@@ -463,14 +436,12 @@ an efficient algorithm (coordinate descent) is derived
 \end{center}
 \nocite{Murata_etal2004}
 \end{frame}
-
 \section{Illustrative Example}
-\label{sec:org694af88}
+\label{sec:orgb2712f5}
 \subsection{toy examples}
-\label{sec:org3e647c3}
-\againframe{sec:orgc5740e9}
-
-\begin{frame}[label={sec:org6422b3d}]{}
+\label{sec:org2dbe0d4}
+\againframe{sec:org87beef7}
+\begin{frame}[label={sec:org0ef47cf}]{}
 \begin{center}
 first round\\
 \includegraphics[height=.42\textheight]{sample}
@@ -482,8 +453,7 @@ first round\\
 \hspace*{.42\textheight}
 \end{center}
 \end{frame}
-
-\begin{frame}[label={sec:org4c5bfc0}]{}
+\begin{frame}[label={sec:org5bec807}]{}
 \begin{center}
 second round\\
 \includegraphics[height=.42\textheight]{wgt1}
@@ -495,8 +465,7 @@ second round\\
 \hspace*{.42\textheight}
 \end{center}
 \end{frame}
-
-\begin{frame}[label={sec:org16cd452}]{}
+\begin{frame}[label={sec:orgfeff946}]{}
 \begin{center}
 third round\\
 \includegraphics[height=.42\textheight]{wgt2}
@@ -508,8 +477,7 @@ third round\\
 \hspace*{.42\textheight}
 \end{center}
 \end{frame}
-
-\begin{frame}[label={sec:orge066d8c}]{}
+\begin{frame}[label={sec:orgea741fa}]{}
 \begin{center}
 sample weights at each round\\
 \includegraphics[height=.20\textheight]{wgt1}
@@ -545,8 +513,7 @@ sample weights at each round\\
 \includegraphics[height=.20\textheight]{wgt16}
 \end{center}
 \end{frame}
-
-\begin{frame}[label={sec:org0041fae}]{}
+\begin{frame}[label={sec:org678abbc}]{}
 \begin{center}
 obtained classifier at each round\\
 \includegraphics[height=.20\textheight]{cls1}
@@ -582,33 +549,30 @@ obtained classifier at each round\\
 \includegraphics[height=.20\textheight]{cls16}
 \end{center}
 \end{frame}
-
-\againframe{sec:orgf92c82d}
-
-\begin{frame}[label={sec:org8bf4c13}]{Error Reduction by Boosting}
+\againframe{sec:orgcdcfb96}
+\begin{frame}[label={sec:orgd9411a1}]{Error Reduction by Boosting}
 \begin{center}
 classification error
 \end{center}
 \begin{columns}
 \begin{column}{0.5\columnwidth}
 \begin{center}
-\includegraphics[width=.8\linewidth]{before} \\[0pt]
+\includegraphics[width=.8\linewidth]{before} \\
 without boosting
 \end{center}
 \end{column}
 \begin{column}{0.5\columnwidth}
 \begin{center}
-\includegraphics[width=.8\linewidth]{after} \\[0pt]
+\includegraphics[width=.8\linewidth]{after} \\
 with boosting
 \end{center}
 \end{column}
 \end{columns}
 \end{frame}
-
 \subsection{application to face detection}
-\label{sec:org92e4973}
-\begin{frame}[label={sec:orga768f57}]{Real World Application}
-\begin{exampleblock}{Face Detection}\label{sec:orgc55b87e}
+\label{sec:orgc838a58}
+\begin{frame}[label={sec:org7f57128}]{Real World Application}
+\begin{exampleblock}{Face Detection}\label{sec:org8deab8c}
 \fullcite{ViolaJones2004}
 \end{exampleblock}
 \begin{itemize}
@@ -620,8 +584,8 @@ with boosting
 \nocite{ViolaJones2004,DomingoWatanabe2000colt}
 \end{frame}
 \section{Conclusion}
-\label{sec:org2b511f8}
-\begin{frame}[label={sec:org95f68cc}]{Concluding Remarks}
+\label{sec:org8972839}
+\begin{frame}[label={sec:org00deafa}]{Concluding Remarks}
 we presented the following
 
 \begin{itemize}
@@ -640,7 +604,6 @@ in addition, possible extensions would be
 \item stopping rules for the number of boosting
 \end{itemize}
 \end{frame}
-
 \begin{frame}[allowframebreaks]{References}
 \printbibliography[heading=none]
 \end{frame}

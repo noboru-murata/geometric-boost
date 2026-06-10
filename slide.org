@@ -47,10 +47,10 @@
     - <3-> all the members are weak in entertainment and sports
     - <3-> *stereo-typed good members*
   #+BEAMER: \vspace{10pt}
-- <2-> poor threesome 
-  - <3-> each member can answer 6 genres
-  - <3-> all the member are weak in different genres
-  - <3-> *poor but varied members*
+  - <2-> poor threesome 
+    - <3-> each member can answer 6 genres
+    - <3-> all the member are weak in different genres
+    - <3-> *poor but varied members*
 
 *** Ensemble Learning
 #+begin_center
@@ -196,7 +196,7 @@ with boosting
 :BEAMER_env: block
 :END:
 - *input:*\\
-  \(n\) samples\;
+  \(n\) samples
   \(\{(\boldsymbol{x}_i,y_i); \boldsymbol{x}_i\in\mathcal{X},y_i\in\mathcal{Y}, i=1,\dots,n\}\),\\
   increasing convex function \(U\).
 - *initialize:*\\
@@ -230,16 +230,24 @@ with boosting
 :END:
 - *step 2:*
   calculate reliability \(\alpha_t\):
-  \begin{align}
+  \begin{equation}
     \alpha_t 
-    &=\arg\min_{\alpha}\sum_{i=1}^n\sum_{y\in\mathcal{Y}}
-      U\Bigl(F_{t-1}(\boldsymbol{x}_i,y)
-      +\alpha f_{t}(\boldsymbol{x}_i,y)\\
-    &\phantom{\arg\min_{\alpha}\sum_{i=1}^n
-      \sum_{y\in\mathcal{Y}}U}\quad
-      -F_{t-1}(\boldsymbol{x}_i,y_i)
-      -\alpha f_{t}(\boldsymbol{x}_i,y_i)\Bigr).
-  \end{align}
+    =\arg\min_{\alpha}\sum_{i=1}^n\sum_{y\in\mathcal{Y}}
+    U\Bigl(F_{t-1}(\boldsymbol{x}_i,y)
+    +\alpha f_{t}(\boldsymbol{x}_i,y)
+    -F_{t-1}(\boldsymbol{x}_i,y_i)
+    -\alpha f_{t}(\boldsymbol{x}_i,y_i)\Bigr).
+  \end{equation}
+  # \begin{align}
+  #   \alpha_t 
+  #   &=\arg\min_{\alpha}\sum_{i=1}^n\sum_{y\in\mathcal{Y}}
+  #     U\Bigl(F_{t-1}(\boldsymbol{x}_i,y)
+  #     +\alpha f_{t}(\boldsymbol{x}_i,y)\\
+  #   &\phantom{\arg\min_{\alpha}\sum_{i=1}^n
+  #     \sum_{y\in\mathcal{Y}}U}\quad
+  #     -F_{t-1}(\boldsymbol{x}_i,y_i)
+  #     -\alpha f_{t}(\boldsymbol{x}_i,y_i)\Bigr).
+  # \end{align}
 
 *** Boosting Algorithm (4)
 **** (iteration)                                                 :B_block:
@@ -294,7 +302,7 @@ special case of boosting algorithm:
 :BEAMER_env: block
 :END:
 - *input:*\\
-  \(n\) samples\;
+  \(n\) samples
   \(\{(\boldsymbol{x}_i,y_i); \boldsymbol{x}_i\in\mathcal{X},y_i\in\mathcal{Y}, i=1,\dots,n\}\),\\
   increasing convex function \(U\).
 - *initialize:*\\
@@ -315,17 +323,17 @@ special case of boosting algorithm:
   should direct as similar as possible:
   \begin{align}
     f_t(\boldsymbol{x},y)
-    &=\arg\max_{f\in\mathcal{F}}
-      \langle q_{t-1}-\tilde{p},f-b'\rangle_{\tilde{\mu}}
+    &=\arg\min_{f\in\mathcal{F}}
+      \langle q_{t-1}-\tilde{p},f-b'\rangle_{\tilde{\mu}}.
       % \\
       % &=\arg\max_{f\in\mathcal{F}}
       % \langle q_{t-1},f-\bar{f}\rangle_{\tilde{\mu}}
       % \\&D_{t}(i,y)\propto q_{t-1}(y|\boldsymbol{x}_i)
   \end{align}
-  where
-  \begin{equation}
-    q=u\Bigl(\xi(q_{t-1})+\alpha f-b(\alpha)\Bigr),\quad u=U'.
-  \end{equation}
+  # where
+  # \begin{equation}
+  #   q=u\Bigl(\xi(q_{t-1})+\alpha f-b(\alpha)\Bigr),\quad u=U'.
+  # \end{equation}
 
 *** 
 #+begin_center
@@ -363,7 +371,7 @@ special case of boosting algorithm:
     \right\},
   \end{equation}
   then find \(\alpha_t\) with a leaf of the empirical distribution
-  \(\tilde{p}\) and model \(\mathcal{Q}_t\):
+  \(\tilde{p}\):
   \begin{equation}
     \alpha_t
     % =\arg\min_{\alpha} L_U(q)
@@ -374,6 +382,8 @@ special case of boosting algorithm:
       -\xi(q(y_i|\boldsymbol{x}_i))
     \right].
   \end{equation}
+  # and model \(\mathcal{Q}_t\):
+  # which minimize \(D_{U}(\tilde{p},q;)\)
 
 *** 
 #+begin_center

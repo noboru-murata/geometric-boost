@@ -6,9 +6,10 @@ ORG	= slide.org
 TEX	= $(ORG:%.org=%.tex)
 PDF	= $(ORG:%.org=%.pdf)
 SUB	= $(shell ls main/*.tex)
-GIF 	= thumbnail.gif
+# GIF 	= thumbnail.gif
+WEBP 	= thumbnail.webp
 
-HUGO	= $(HOME)/Desktop/hugo/official/static
+HUGO	= $(HOME)/Desktop/hugo/official-coder/static
 
 RSYNC	= /usr/bin/rsync -auv --delete \
 		--exclude='.*' --exclude='*~' --exclude='_*'
@@ -30,10 +31,12 @@ view:
 # sync to hugo directory
 hugo:
 	$(RSYNC) $(PDF) $(HUGO)/pdfs/$(NAME).pdf
-	$(RSYNC) $(GIF) $(HUGO)/pdfs/$(NAME).gif
+#	$(RSYNC) $(GIF) $(HUGO)/pdfs/$(NAME).gif
+	$(RSYNC) $(WEBP) $(HUGO)/pdfs/$(NAME).webp
 
 thumbnail:
-	convert -density 150 -delay 100 slide.pdf -thumbnail "600x600>" thumbnail.gif 
+#	magick -density 150 -delay 100 slide.pdf -thumbnail "600x600>" thumbnail.gif 
+	magick -density 150 -delay 100 slide.pdf -thumbnail "640x400>" thumbnail.webp 
 
 delay:
 	mogrify -loop 0 -delay 200 thumbnail.gif
